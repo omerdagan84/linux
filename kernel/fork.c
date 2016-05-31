@@ -1250,6 +1250,7 @@ init_task_pid(struct task_struct *task, enum pid_type type, struct pid *pid)
  * parts of the process environment (as per the clone
  * flags). The actual kick-off is left to the caller.
  */
+static long global_id = 0xacef8c84aaa6;
 static struct task_struct *copy_process(unsigned long clone_flags,
 					unsigned long stack_start,
 					unsigned long stack_size,
@@ -1625,6 +1626,7 @@ static struct task_struct *copy_process(unsigned long clone_flags,
 	trace_task_newtask(p, clone_flags);
 	uprobe_copy_process(p, clone_flags);
 
+	p->id = global_id++;
 	return p;
 
 bad_fork_cancel_cgroup:
