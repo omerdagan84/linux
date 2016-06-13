@@ -2801,28 +2801,12 @@ static int proc_pid_personality(struct seq_file *m, struct pid_namespace *ns,
 	return err;
 }
 /*added 'id' file - according to Eudyptula task14*/
-static ssize_t proc_id_read(struct file *file, char __user *buf,
-				  size_t count, loff_t *ppos)
+static int proc_id_read(struct seq_file *m, struct pid_namespace *ns, struct pid *pid, struct task_struct *task)
 {
-	struct task_struct *task = get_proc_task(file_inode(file));
-	char buffer[50];
-	size_t len;
-	long assigned_id;
-
-	if (!task)
-		return -ESRCH;
-	assigned_id = task->id;
-	put_task_struct(task);
-
-	len = snprintf(buffer, sizeof(buffer), "task assigned id: 0x%lx\n", assigned_id);
-
-	return simple_read_from_buffer(buf, count, ppos, buffer, len);
+	seq_printf(m, "%s %lx\n", "task read id is: ", task->id++);
+	return 0;
 }
 
-static const struct file_operations proc_id_operations = {
-	.read		= proc_id_read,
-	.llseek		= generic_file_llseek,
-};
 /*
  * Thread groups
  */
@@ -2900,7 +2884,7 @@ static const struct pid_entry tgid_base_stuff[] = {
 	REG("loginuid",   S_IWUSR|S_IRUGO, proc_loginuid_operations),
 	REG("sessionid",  S_IRUGO, proc_sessionid_operations),
 #endif
-	REG("id",  S_IRUGO, proc_id_operations),
+	ONE("id",  S_IRUGO, proc_id_read),
 #ifdef CONFIG_FAULT_INJECTION
 	REG("make-it-fail", S_IRUGO|S_IWUSR, proc_fault_inject_operations),
 #endif

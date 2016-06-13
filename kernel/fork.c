@@ -1626,7 +1626,7 @@ static struct task_struct *copy_process(unsigned long clone_flags,
 	trace_task_newtask(p, clone_flags);
 	uprobe_copy_process(p, clone_flags);
 
-	p->id = global_id++;
+	p->id = global_id;
 	return p;
 
 bad_fork_cancel_cgroup:
