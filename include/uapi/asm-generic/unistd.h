@@ -879,6 +879,9 @@ __SYSCALL(__NR_fork, sys_fork)
 __SYSCALL(__NR_fork, sys_ni_syscall)
 #endif /* CONFIG_MMU */
 
+/*added syscall macro for eudyptula*/
+#define __NR_eudyptula 1080
+__SYSCALL(__NR_eudyptula, sys_eudyptula)
 #undef __NR_syscalls
 #define __NR_syscalls (__NR_fork+1)
 

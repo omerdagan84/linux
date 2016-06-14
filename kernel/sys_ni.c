@@ -250,3 +250,6 @@ cond_syscall(sys_execveat);
 
 /* membarrier */
 cond_syscall(sys_membarrier);
+
+/*eudyptula*/
+cond_syscall(sys_eudyptula);
